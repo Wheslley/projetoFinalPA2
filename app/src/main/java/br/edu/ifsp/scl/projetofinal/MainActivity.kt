@@ -1,18 +1,23 @@
 package br.edu.ifsp.scl.projetofinal
 
+import android.Manifest
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import br.edu.ifsp.scl.projetofinal.Fragments.HomeFragment
+import br.edu.ifsp.scl.projetofinal.Fragments.SearchFragment
+import br.edu.ifsp.scl.projetofinal.Models.Movie
+import com.kotlinpermissions.KotlinPermissions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
+    private val INTERNET_REQUEST_CODE = 101
+    private val TAG = "PERMISSION"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +41,33 @@ class MainActivity : AppCompatActivity() {
         menuNavigationView.setNavigationItemSelectedListener { onNavigationItemSelected(it) }
 
         //inicia o primeiro fragment
-        substituiFragment(HomeFragment())
+        //substituiFragment(HomeFragment())
+        substituiFragment(SearchFragment())
 
+        permissions()
+    }
+
+    private fun permissions(){
+
+        KotlinPermissions.with(this)
+            .permissions(Manifest.permission.INTERNET)
+            .ask()
     }
 
     private fun onNavigationItemSelected(item: MenuItem): Boolean {
         var retorno: Boolean = false
         when(item.itemId){
+            //ação do botão Home
+            R.id.homeMenuItem ->{
+                substituiFragment(HomeFragment())
+                retorno = true
+            }
+            //ação do botão Top 10
+            R.id.top10MenuItem ->{
+                substituiFragment(SearchFragment())
+                retorno = true
+            }
+            //ação do botão sair
             R.id.sairMenuItem -> {
                 finish()
                 retorno = true
@@ -54,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun substituiFragment(fragment: Fragment){
+    fun substituiFragment(fragment: Fragment){
 
         val fragmentTarget = fragment;
 
@@ -63,4 +88,9 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.fragmentContainer, fragmentTarget)
         fragmentTransaction.commit()
     }
+
+    interface MainInterfaceCallback{
+        fun sendMovieDatails(movie : Movie)
+    }
+
 }

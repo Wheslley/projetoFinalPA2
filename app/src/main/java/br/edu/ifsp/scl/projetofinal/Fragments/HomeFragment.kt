@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import br.edu.ifsp.scl.projetofinal.MainActivity
 import br.edu.ifsp.scl.projetofinal.Models.Movie
 import br.edu.ifsp.scl.projetofinal.R
@@ -14,11 +15,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.home_fragment.*
 import kotlinx.android.synthetic.main.home_fragment.view.*
 
-class HomeFragment : Fragment() {
 
+class HomeFragment : Fragment(), View.OnClickListener {
 
+    lateinit var objMovie: Movie
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val layoutView = inflater.inflate(R.layout.home_fragment, null)
         val omdb = Omdb(activity as MainActivity)
 
@@ -27,29 +30,39 @@ class HomeFragment : Fragment() {
             var txtMovie: String = field_search.text.toString()
 
             if (txtMovie.isNotEmpty()) {
-                omdb.searchMovie(txtMovie)
+                omdb.findMovie(txtMovie)
             }
         }
 
-        layoutView.btn_clear.setOnClickListener {
+//        layoutView.field_poster.setOnClickListener {
+//
+//            var fragmenDet = DetailsFragment("Testando")
+//            Utils.replaceFragment(fragmentManager, fragmenDet)
+//
+//        }
 
-            field_search.text?.clear()
-            result_card.visibility = View.GONE
+        //click listeners
+        layoutView.btn_clear.setOnClickListener(this)
 
-        }
-
+        //Retorno da requisição
         omdb.callback = object : Omdb.MovieCallback{
+            override fun onRequestFail(err: Throwable) {
+
+                Toast.makeText(this@HomeFragment.context, err.message, Toast.LENGTH_LONG).show()
+
+            }
 
             override fun onResponseFail(obj: Movie) {
-                result_card.visibility = View.VISIBLE
-                field_title.text = obj.error
+                result_card.visibility = View.GONE
+                Toast.makeText(this@HomeFragment.context, obj.error, Toast.LENGTH_LONG).show()
             }
 
             override fun onResponse(obj: Movie) {
 
                 result_card.visibility = View.VISIBLE
+                //objMovie = obj.copy()
 
-                if (obj !== null){
+                if (obj.response.equals("True")){
                     field_title.text = getString(R.string.txt_name) + obj.title
                     field_year.text = getString(R.string.txt_year) + obj.year
                     field_type.text = getString(R.string.txt_type) + obj.type
@@ -77,7 +90,20 @@ class HomeFragment : Fragment() {
         return layoutView
     }
 
+    override fun onClick(v: View?) {
+
+        when(v?.id){
+
+            R.id.btn_clear -> {
+                field_search.text?.clear()
+                result_card.visibility = View.GONE
+            }
+        }
+    }
+
+
 }
+
 
 private fun ImageView.loadPicasso(urlPoster: String) {
     Picasso.get().load(urlPoster).into(this)

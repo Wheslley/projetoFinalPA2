@@ -10,4 +10,10 @@ interface EndpointsApi {
     @GET("/")
     fun getFilmByTitle(@Query("t") title: String): Call<Movie>
 
+    @GET("/")
+    fun getFilmById(@Query("i") id: String): Call<Movie>
+
+    @GET("/")
+    fun getFilmsListByTitle(@Query("s") title: String): Call<Movie>
+
 }

@@ -46,13 +46,14 @@ class Omdb(mainActivity: MainActivity) {
     // Cria um objeto, a partir da Interface Retrofit, que contém as funções de requisição
     val endpointsApi: EndpointsApi = retrofit.create(EndpointsApi::class.java)
 
-    fun searchMovie(title: String){
+    fun findMovie(title: String){
 
         endpointsApi.getFilmByTitle(title).enqueue(
 
             object : Callback<Movie>{
                 override fun onFailure(call: Call<Movie>, t: Throwable) {
-                     call.cancel()
+                    call.cancel()
+                    callback?.onRequestFail(t)
                 }
 
                 override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
@@ -70,12 +71,38 @@ class Omdb(mainActivity: MainActivity) {
 
             }
         )
+    }
 
+    fun searchListMovies(title: String){
 
+        endpointsApi.getFilmsListByTitle(title).enqueue(
+
+            object : Callback<Movie>{
+                override fun onFailure(call: Call<Movie>, t: Throwable) {
+                    call.cancel()
+                    callback?.onRequestFail(t)
+                }
+
+                override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                    val body = response.body()
+                    if (body != null){
+
+                        if (body.response.equals("False")){
+                            callback?.onResponseFail(body)
+                        }
+                        else{
+                            callback?.onResponse(body)
+                        }
+                    }
+                }
+
+            }
+        )
     }
 
     interface MovieCallback{
         fun onResponse(obj: Movie)
         fun onResponseFail(obj: Movie)
+        fun onRequestFail(err: Throwable)
     }
 }
