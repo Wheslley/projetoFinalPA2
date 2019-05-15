@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wiki Filmes SDM</string>
+    <string name="app_name">Projeto Final SDM</string>
     <string name="menu_open" translatable="false">menu_open</string>
     <string name="menu_closed" translatable="false">menu_closed</string>
     <string name="subtitle_home">Learn all about your movies</string>

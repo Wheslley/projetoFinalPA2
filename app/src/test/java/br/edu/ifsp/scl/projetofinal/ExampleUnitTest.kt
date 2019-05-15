@@ -1,4 +1,4 @@
-package br.edu.ifsp.scl.projetofinalpa2
+package br.edu.ifsp.scl.projetofinal
 
 import org.junit.Test
 

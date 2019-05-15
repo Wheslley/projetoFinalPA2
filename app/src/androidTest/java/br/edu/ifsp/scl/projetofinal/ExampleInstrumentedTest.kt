@@ -1,4 +1,4 @@
-package br.edu.ifsp.scl.projetofinalpa2
+package br.edu.ifsp.scl.projetofinal
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("br.edu.ifsp.scl.projetofinalpa2", appContext.packageName)
+        assertEquals("br.edu.ifsp.scl.wikifilmessdm", appContext.packageName)
     }
 }

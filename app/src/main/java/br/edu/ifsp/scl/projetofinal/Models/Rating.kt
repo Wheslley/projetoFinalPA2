@@ -1,4 +1,4 @@
-package br.edu.ifsp.scl.wikifilmessdm.Models
+package br.edu.ifsp.scl.projetofinal.Models
 
 import com.google.gson.annotations.SerializedName
 

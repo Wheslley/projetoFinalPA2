@@ -1,8 +1,8 @@
-package br.edu.ifsp.scl.wikifilmessdm.Service
+package br.edu.ifsp.scl.projetofinal.Service
 
-import br.edu.ifsp.scl.wikifilmessdm.Constants
-import br.edu.ifsp.scl.wikifilmessdm.MainActivity
-import br.edu.ifsp.scl.wikifilmessdm.Models.Movie
+import br.edu.ifsp.scl.projetofinal.Constants
+import br.edu.ifsp.scl.projetofinal.MainActivity
+import br.edu.ifsp.scl.projetofinal.Models.Movie
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -46,14 +46,13 @@ class Omdb(mainActivity: MainActivity) {
     // Cria um objeto, a partir da Interface Retrofit, que contém as funções de requisição
     val endpointsApi: EndpointsApi = retrofit.create(EndpointsApi::class.java)
 
-    fun findMovie(title: String){
+    fun searchMovie(title: String){
 
         endpointsApi.getFilmByTitle(title).enqueue(
 
             object : Callback<Movie>{
                 override fun onFailure(call: Call<Movie>, t: Throwable) {
-                    call.cancel()
-                    callback?.onRequestFail(t)
+                     call.cancel()
                 }
 
                 override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
@@ -71,15 +70,12 @@ class Omdb(mainActivity: MainActivity) {
 
             }
         )
-    }
 
-    fun searchListMovies(title: String){
 
     }
 
     interface MovieCallback{
         fun onResponse(obj: Movie)
         fun onResponseFail(obj: Movie)
-        fun onRequestFail(err: Throwable)
     }
 }

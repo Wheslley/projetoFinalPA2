@@ -1,4 +1,4 @@
-package br.edu.ifsp.scl.wikifilmessdm
+package br.edu.ifsp.scl.projetofinal
 
 object Constants {
 
